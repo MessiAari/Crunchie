@@ -1,0 +1,59 @@
+.wave {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  overflow: hidden;
+  pointer-events: none;
+  contain: layout paint style;
+}
+
+.ingredient {
+  position: absolute;
+  display: block;
+  opacity: var(--depth-opacity);
+  filter: blur(var(--depth-blur));
+  pointer-events: none;
+  user-select: none;
+  will-change: transform;
+}
+
+.primary {
+  z-index: 0;
+}
+
+.secondary {
+  z-index: 1;
+}
+
+.idle .ingredient,
+.acknowledging .ingredient,
+.primed .ingredient,
+.resetting .ingredient {
+  animation: none;
+  transition: none;
+  transform: translate3d(0, calc(var(--enter) + var(--vertical-offset)), 0);
+}
+
+.running .ingredient {
+  animation: ingredient-wave var(--wave-duration) linear var(--delay) both;
+}
+
+@keyframes ingredient-wave {
+  0% {
+    transform: translate3d(0, calc(var(--enter) + var(--exit) + var(--vertical-offset)), 0);
+  }
+
+  50% {
+    transform: translate3d(var(--drift), var(--vertical-offset), 0);
+  }
+
+  100% {
+    transform: translate3d(0, calc(var(--exit-negative) - var(--enter) + var(--vertical-offset)), 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wave {
+    display: none;
+  }
+}
